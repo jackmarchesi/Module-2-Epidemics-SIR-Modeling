@@ -1,3 +1,4 @@
+
 # drug efficacy optimization example for BME 2315
 # made by Lavie, fall 2025
 
@@ -13,11 +14,8 @@ metformin_lambda = 0.5
 
 lisinopril_lambda = 0.8
 
-<<<<<<< HEAD
-escitalopram_lambda = 0.9
-=======
 escitalopram_lambda = 0.3
->>>>>>> 610da3ad3c1e112a0f529233326b4450c548ea55
+
 
 def metformin(x):   # mild toxicity, moderate efficacy
     efficacy = 0.8 * np.exp(-0.1*(x-5)**2)
@@ -48,12 +46,10 @@ plt.legend()
 
 # %% Find optimal dosages for each drug
 
+
 # First method: Steepest Ascent using the update rule
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 610da3ad3c1e112a0f529233326b4450c548ea55
 # first, need the first derivative (gradient)
 def gradient(f, x, h=1e-4):
     """Central difference approximation for f'(x)."""
@@ -72,6 +68,7 @@ def steepest_ascent(f, x0, h_step=0.1, tol=1e-6, max_iter=1000):
         x = x_new
     return x, f(x)
 
+
 # metformin
 opt_dose_metformin, opt_effect_metformin = steepest_ascent(metformin, x0=1.0)
 print(f"Steepest Ascent Method - Optimal Metformin Dose: {opt_dose_metformin:.2f} mg")
@@ -86,6 +83,7 @@ print(f"Steepest Ascent Method - Optimal Lisinopril Effect: {opt_effect_lisinopr
 opt_dose_escitalopram, opt_effect_escitalopram = steepest_ascent(escitalopram, x0=1.0)
 print(f"Steepest Ascent Method - Optimal Escitalopram Dose: {opt_dose_escitalopram:.2f} mg")
 print(f"Steepest Ascent Method - Optimal Escitalopram Effect: {opt_effect_escitalopram*100:.2f}%")
+
 
 # %% Newton's method
 
@@ -113,6 +111,8 @@ def newtons_method(f, x0, tol=1e-6, max_iter=1000):
         x = x_new
     return x, f(x)
 
+
+
 # metformin
 opt_dose_metformin_nm, opt_effect_metformin_nm = newtons_method(metformin, x0=1.0)
 print(f"Newton's Method - Optimal Metformin Dose: {opt_dose_metformin_nm:.2f} mg")
@@ -127,11 +127,8 @@ print(f"Newton's Method - Optimal Lisinopril Effect: {opt_effect_lisinopril_nm*1
 opt_dose_escitalopram_nm, opt_effect_escitalopram_nm = newtons_method(escitalopram, x0=1.0)
 print(f"Newton's Method - Optimal Escitalopram Dose: {opt_dose_escitalopram_nm:.2f} mg")
 print(f"Newton's Method - Optimal Escitalopram Effect: {opt_effect_escitalopram_nm*100:.2f}%")
-<<<<<<< HEAD
-=======
 
 #Task 2: Compare the two methods on the combined drug effect optimization problem
-
 #The following code block compares the two methods on the combined drug effect, which is a more complex optimization problem due to the interaction of multiple drugs.
 print("\n--- Combined Drug Effect Optimization ---")
 
@@ -149,6 +146,7 @@ print(f"Newton's Method - Optimal Combined Effect: {opt_effect_combined_nm*100:.
 
 # Observe: Newton's method converges in far fewer iterations than steepest ascent
 # because it uses curvature (second derivative) information to take smarter steps.
+
 
 #%% Effect of max_iter on result accuracy
 
@@ -186,6 +184,7 @@ for lam in lambda_values:
         best_lambda = lam
         best_dose_achieved = opt_dose
 
+
 print(f"Best lambda for Metformin: {best_lambda:.4f}")
 print(f"Achieved optimal dose:     {best_dose_achieved:.4f} mg")
 print(f"Target dose:               {target_dose:.4f} mg")
@@ -212,4 +211,3 @@ plt.legend()
 plt.show()
 # This code block demonstrates how adjusting the toxicity parameter (lambda) for Metformin can shift its optimal dose to better align with the optimal dose of the combined drug effect. By tuning lambda, we can effectively "steer" the optimization landscape to achieve a desired outcome.
 # If the best lambda is significantly different from the original, it suggests that the original toxicity assumption for Metformin may not be optimal for achieving the best combined effect.
->>>>>>> 610da3ad3c1e112a0f529233326b4450c548ea55
