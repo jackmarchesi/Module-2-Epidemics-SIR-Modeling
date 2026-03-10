@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 
-# Load the data
+# Load the csv file data
+# data = pd.read_csv(r'C:\Users\Jmarc\Desktop\Comp BME\module-2-jackmarchesi\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE_1.csv', parse_dates=['date'], header=0, index_col=None)
 data = pd.read_csv(r'C:\Users\yancy\OneDrive\BME2315\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE#2.csv')
 data.columns = ['day', 'date', 'active_cases']
 cases = data['active_cases'].values
@@ -18,28 +19,28 @@ dt = 0.1
 # SEIR simulation function
 def simulate_seir(params):
     beta, sigma, gamma = params
-    S, E, I, R = [S0], [E0], [I0], [R0]
+    S, E, I, R = [S0], [E0], [I0], [R0] # Initialize lists to store compartment values over time
     for _ in range(int(num_days/dt)):
-        s, e, i, r = S[-1], E[-1], I[-1], R[-1]
-        ds = -beta * s * i / N
+        s, e, i, r = S[-1], E[-1], I[-1], R[-1] # Get current values
+        ds = -beta * s * i / N # the next four lines calculate the changes in each compartment based on the SEIR model equations
         de = beta * s * i / N - sigma * e
         di = sigma * e - gamma * i
         dr = gamma * i
-        S.append(max(s + ds*dt,0))
+        S.append(max(s + ds*dt,0)) # Euler update steps
         E.append(max(e + de*dt,0))
         I.append(max(i + di*dt,0))
         R.append(max(r + dr*dt,0))
-    return np.array(I)
+    return np.array(I) # Return only the infectious population for fitting
 
 #  Objective function: least squares difference between simulated infectious and actual cases
 def objective(params):
-    I_sim = simulate_seir(params)
-    t_sim = np.linspace(0, num_days, len(I_sim))
-    I_interp = np.interp(days_data, t_sim, I_sim)
-    return np.sum((I_interp - cases)**2)
+    I_sim = simulate_seir(params) # Simulate SEIR with given parameters
+    t_sim = np.linspace(0, num_days, len(I_sim)) # Time array for simulated data
+    I_interp = np.interp(days_data, t_sim, I_sim) # Interpolate simulated infections at the days corresponding to actual data
+    return np.sum((I_interp - cases)**2) # Return sum of squared differences (least squares)
 
 # Fit parameters
-res = minimize(objective, [0.27, 1/5, 1/7], bounds=[(0,1),(0,1),(0,1)])
+res = minimize(objective, [0.27, 1/5, 1/7], bounds=[(0,1),(0,1),(0,1)]) # Optimize parameters with bounds to ensure they are between 0 and 1
 beta_fit, sigma_fit, gamma_fit = res.x
 print(f"Fitted parameters: beta={beta_fit:.4f}, sigma={sigma_fit:.4f}, gamma={gamma_fit:.4f}")
 

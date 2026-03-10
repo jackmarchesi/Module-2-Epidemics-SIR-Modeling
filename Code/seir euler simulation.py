@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+# data = pd.read_csv(r'C:\Users\Jmarc\Desktop\Comp BME\module-2-jackmarchesi\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE_1.csv', parse_dates=['date'], header=0, index_col=None)
 data = pd.read_csv(r'C:\Users\yancy\OneDrive\BME2315\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE#2.csv')
 data.columns = ['day', 'date', 'active_cases']
 cases = data['active_cases']
@@ -53,17 +54,17 @@ for _ in range(num_steps):
     I[-1] = max(I[-1], 0)
     R[-1] = max(R[-1], 0)
 
-# --- Time array for plotting ---
+# Time array for plotting 
 t = np.linspace(0, num_days, len(S))
 
-# --- Plot SEIR simulation ---
+# Plot SEIR simulation 
 plt.figure(figsize=(10,6))
 plt.plot(t, S, label='Susceptible')
 plt.plot(t, E, label='Exposed')
 plt.plot(t, I, label='Infectious')
 plt.plot(t, R, label='Recovered')
 
-# --- Overlay actual data ---
+# Overlay actual data 
 plt.scatter(days_data, cases, color='red', label='Actual Active Cases', s=15)
 
 plt.xlabel('Days')

@@ -3,9 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 
-# -------------------------
-# 1️⃣ Load the actual data
-# -------------------------
+# Load the csv file data
+# data = pd.read_csv(r'C:\Users\Jmarc\Desktop\Comp BME\module-2-jackmarchesi\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE_1.csv', parse_dates=['date'], header=0, index_col=None)
 data = pd.read_csv(
     r'C:\Users\yancy\OneDrive\BME2315\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE#2.csv'
 )
@@ -13,9 +12,8 @@ data.columns = ['day', 'date', 'active_cases']  # rename columns
 cases = data['active_cases'].values  # number of infected people each day
 days_data = data['day'].values       # day numbers
 
-# -------------------------
-# 2️⃣ Initial populations & parameters
-# -------------------------
+# Initial populations & parameters
+
 N = 10000        # Total population
 S0 = 9990        # Initially susceptible
 E0 = 5           # Initially exposed
@@ -24,9 +22,9 @@ R0 = 0           # Initially recovered
 num_days = 100   # How many days to simulate
 dt = 0.1         # Time step (fraction of a day)
 
-# -------------------------
-# 3️⃣ SEIR simulation function
-# -------------------------
+
+# SEIR simulation function
+
 def simulate_seir(params):
     """
     Simulates the SEIR model given beta, sigma, gamma.
@@ -59,9 +57,8 @@ def simulate_seir(params):
     # Convert lists to arrays for easier handling
     return np.array(S), np.array(E), np.array(I), np.array(R)
 
-# -------------------------
-# 4️⃣ Objective function for fitting
-# -------------------------
+# Objective function for fitting
+
 def objective(params):
     """
     Computes the difference between the model-predicted infections (I)
@@ -78,9 +75,8 @@ def objective(params):
     # Return sum of squared differences (least squares)
     return np.sum((I_interp - cases)**2)
 
-# -------------------------
-# 5️⃣ Fit the SEIR model to the data
-# -------------------------
+# Fit the SEIR model to the data
+
 # Start with initial guesses for beta, sigma, gamma
 initial_guess = [0.27, 1/5, 1/7]
 
@@ -91,15 +87,14 @@ res = minimize(objective, initial_guess, bounds=[(0,1),(0,1),(0,1)])
 beta_fit, sigma_fit, gamma_fit = res.x
 print(f"Fitted parameters: beta={beta_fit:.4f}, sigma={sigma_fit:.4f}, gamma={gamma_fit:.4f}")
 
-# -------------------------
-# 6️⃣ Run SEIR simulation with fitted parameters
-# -------------------------
+
+# Run SEIR simulation with fitted parameters
+
 S_fit, E_fit, I_fit, R_fit = simulate_seir([beta_fit, sigma_fit, gamma_fit])
 t = np.linspace(0, num_days, len(S_fit))  # time array for plotting
 
-# -------------------------
-# 7️⃣ Plot the results
-# -------------------------
+# Plot the results
+
 plt.figure(figsize=(12,6))
 
 # Plot SEIR compartments
