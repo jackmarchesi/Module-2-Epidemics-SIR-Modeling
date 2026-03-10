@@ -46,3 +46,5 @@ plt.title('Mystery Virus – Exponential Fit')
 plt.legend()
 plt.savefig('active_cases_with_exponential_fit.png')
 plt.show()
+
+

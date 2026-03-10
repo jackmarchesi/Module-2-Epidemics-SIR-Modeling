@@ -1,12 +1,22 @@
+
+
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+data = pd.read_csv(r'C:\Users\yancy\OneDrive\BME2315\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE#2.csv')
+data.columns = ['day', 'date', 'active_cases']
+cases = data['active_cases']
+days_data = data['day']
+
+
 #model parameters
-beta = 0.27   # Infection rate estimares from R0
+beta = 0.27   # Infection rate estimates from R0
 sigma = 1/5   # Rate exposed people became infectious
 gamma = 1/7   # Recovery rate estimates from R0
-N = 1000      # Total population size
-days = 160    # Number of days to simulate
+
+N = 10000      # Total population size
+num_days = 100    # Number of days to simulate
 dt = 0.1       # Time step for the simulation (1 day)
 
 # initial populations
@@ -16,7 +26,10 @@ I = [5]    # Initial infectious population
 R = [0]    # Initial recovered population
 
 # Euler method simulation
-for day in range(days):
+
+# for day in range(num_days):
+num_steps = int(num_days / dt)
+for _ in range(num_steps):
     #Get the most recent values
     s = S[-1]
     e = E[-1]
@@ -28,21 +41,36 @@ for day in range(days):
     di = sigma * e - gamma * i  # Change in infectious population
     dr = gamma * i  # Change in recovered population
 
-    #Euler update step: next value = current value + change * time step
+#     #Euler update step: next value = current value + change * time step
     S.append(s + ds * dt)
     E.append(e + de * dt)
     I.append(i + di * dt)
     R.append(r + dr * dt)
 
-# Plotting the results
-plt.plot(S, label='Susceptible')
-plt.plot(E, label='Exposed')
-plt.plot(I, label='Infectious')
-plt.plot(R, label='Recovered')
+    # Avoid negative populations
+    S[-1] = max(S[-1], 0)
+    E[-1] = max(E[-1], 0)
+    I[-1] = max(I[-1], 0)
+    R[-1] = max(R[-1], 0)
+
+# --- Time array for plotting ---
+t = np.linspace(0, num_days, len(S))
+
+# --- Plot SEIR simulation ---
+plt.figure(figsize=(10,6))
+plt.plot(t, S, label='Susceptible')
+plt.plot(t, E, label='Exposed')
+plt.plot(t, I, label='Infectious')
+plt.plot(t, R, label='Recovered')
+
+# --- Overlay actual data ---
+plt.scatter(days_data, cases, color='red', label='Actual Active Cases', s=15)
+
 plt.xlabel('Days')
 plt.ylabel('Number of Individuals')
-plt.title('SEIR Epidemic Simulation (Euler Method)')
+plt.title('SEIR Simulation vs Actual Active Cases')
 plt.legend()
+plt.grid(True)
 plt.show()
 
 

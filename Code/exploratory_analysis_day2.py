@@ -19,3 +19,5 @@ def exponential_growth(t, r):
 # Approximate R0 using this fit
 
 # Add the fit as a line on top of your scatterplot.
+
+
