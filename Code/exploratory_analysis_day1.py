@@ -6,7 +6,8 @@ import numpy as np
 
 #%%
 # Load the data
-data = pd.read_csv(r'C:\Users\Jmarc\Desktop\Comp BME\module-2-jackmarchesi\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE_1.csv', parse_dates=['date'], header=0, index_col=None)
+#data = pd.read_csv(r'C:\Users\Jmarc\Desktop\Comp BME\module-2-jackmarchesi\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE_1.csv', parse_dates=['date'], header=0, index_col=None)
+data = pd.read_csv(r'C:\Users\yancy\OneDrive\BME2315\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE_1.csv', parse_dates=['date'], header=0, index_col=None)
 data.columns = ['day', 'date', 'active_cases'] # Load the data from the specified CSV file, parsing the 'date' column as datetime objects. The header is set to 0 to indicate that the first row contains column names, and index_col is set to None to use the default integer index. After loading, we rename the columns to 'day', 'date', and 'active_cases' for easier reference in the analysis.
 
 #%%
