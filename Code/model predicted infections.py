@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 
 # Load the csv file data
-# data = pd.read_csv(r'C:\Users\Jmarc\Desktop\Comp BME\module-2-jackmarchesi\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE_1.csv', parse_dates=['date'], header=0, index_col=None)
-data = pd.read_csv(
-    r'C:\Users\yancy\OneDrive\BME2315\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE#2.csv'
-)
+data = pd.read_csv(r'C:\Users\Jmarc\Desktop\Comp BME\module-2-jackmarchesi\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE_1.csv', parse_dates=['date'], header=0, index_col=None)
+#data = pd.read_csv(
+#    r'C:\Users\yancy\OneDrive\BME2315\Module-2-Epidemics-SIR-Modeling\Data\mystery_virus_daily_active_counts_RELEASE#2.csv'
+#)
 data.columns = ['day', 'date', 'active_cases']  # rename columns
 cases = data['active_cases'].values  # number of infected people each day
 days_data = data['day'].values       # day numbers
